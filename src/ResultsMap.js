@@ -13,7 +13,7 @@ export class ResultsMap extends Component {
     return (
       <LoadScript
         id="script-loader"
-        googleMapsApiKey="AIzaSyBEo5uBhm-RULKicj-jm4COiBTKEyjFdqE"
+        googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}
         libraries={["drawing", "visualization"]}
       >
         <GoogleMap

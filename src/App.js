@@ -8,7 +8,6 @@ import { SelectorMap } from "./SelectorMap";
 import Button from "@material-ui/core/Button";
 import LoadingOverlay from "react-loading-overlay";
 import BounceLoader from "react-spinners/BounceLoader";
-
 import {
   GoogleMap,
   LoadScript,
@@ -36,7 +35,7 @@ function App() {
           <div>
             <LoadScript
               id="script-loader"
-              googleMapsApiKey="AIzaSyBEo5uBhm-RULKicj-jm4COiBTKEyjFdqE"
+              googleMapsApiKey=process.env.REACT_APP_MAPS_KEY
               libraries={["drawing"]}
             >
               <GoogleMap
