@@ -1,20 +1,17 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-import requests
 import json
-import urllib
-import urllib.parse
-# import os
 from os.path import abspath
-import zipfile
 from watson_developer_cloud import VisualRecognitionV3
 
 from backend.get_points import calculate_coordinates
 from timbr.local_only_no_git import GOOGLE_API_KEY, IBM_API_KEY
 
-
+@csrf_exempt
 def index(request):
+    request.GET.get('')
     coordinates = calculate_coordinates(
         [(33.780000, -84.285000), (33.640000, -84.103000)], 2)
     print("COORDINATES:", coordinates)
@@ -52,10 +49,6 @@ def send_pic_to_IBM(g_maps_picture):
         '2018-03-19',
         iam_apikey=IBM_API_KEY
     )
-
-    # urllib.request.urlretrieve(g_maps_picture, "pic_from_google.jpg")
-    # g_maps_picture = urllib.parse.quote(g_maps_picture)
-    # print("Encoded:", g_maps_picture)
 
     classes_result = visual_recognition.classify(
         url=g_maps_picture,
