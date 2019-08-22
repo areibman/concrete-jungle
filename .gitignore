@@ -24,3 +24,7 @@ yarn-error.log*
 .env
 .env.development
 .env.production
+
+local_only_no_git.py
+*.pyc
+/__pycache__
