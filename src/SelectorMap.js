@@ -23,7 +23,8 @@ export class SelectorMap extends React.Component {
     this.state = {
       count: 1,
       isSearching: false,
-      polygonsList: []
+      polygonsList: [],
+      data: {}
     };
   }
 
@@ -31,15 +32,17 @@ export class SelectorMap extends React.Component {
     this.setState({ polygonsList: [] });
   };
 
-  setSearchable = () => {
-    this.setState({ isSearching: true });
+  toggleSearchable = () => {
+    this.setState({ isSearching: !this.state.isSearching });
   };
 
   fetchData = () => {
+    this.toggleSearchable();
     axios
       .get("https://jsonplaceholder.typicode.com/users")
       .then(response => {
         // create an array of contacts only with relevant data
+
         const newContacts = response.data.map(c => {
           return {
             id: c.id,
@@ -54,9 +57,14 @@ export class SelectorMap extends React.Component {
         });
 
         // store the new state object in the component's state
-        this.setState(newState);
+        // this.setState({ data: newState });
+        this.toggleSearchable();
+        console.log(newState);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        this.toggleSearchable();
+      });
   };
 
   render() {
@@ -87,6 +95,15 @@ export class SelectorMap extends React.Component {
                 drawingMode={"rectangle"}
                 onRectangleComplete={polygon => {
                   this.setState({ polygonsList: [polygon] });
+                  let ne = polygon
+                    .getBounds()
+                    .getNorthEast()
+                    .toJSON();
+                  let sw = polygon
+                    .getBounds()
+                    .getSouthWest()
+                    .toJSON();
+                  this.setState({ coordinatePair: { ne, sw } });
                   polygon.setMap(null);
                 }}
                 onCircleComplete={polygon => {
@@ -102,8 +119,8 @@ export class SelectorMap extends React.Component {
                   polygon.setMap(null);
                 }}
               />
-              {this.state.polygonsList.map(polygon => (
-                <Rectangle {...polygon} />
+              {this.state.polygonsList.map((polygon, ndx) => (
+                <Rectangle {...polygon} id={ndx} />
               ))}
             </GoogleMap>
           </LoadScript>
@@ -130,13 +147,13 @@ export class SelectorMap extends React.Component {
               zIndex: 100,
               margin: "10px"
             }}
-            onClick={this.setSearchable}
+            onClick={this.fetchData}
             disabled={!this.state.polygonsList.length || this.state.isSearching}
           >
             Submit
           </Button>
+          {JSON.stringify(this.state.data)}
         </React.Fragment>
-        {this.fetchData() || "plumbus"}
       </div>
     );
   }
