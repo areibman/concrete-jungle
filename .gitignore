@@ -27,4 +27,5 @@ yarn-error.log*
 
 local_only_no_git.py
 *.pyc
-/__pycache__
+timbr/timbr/__pycache__/
+timbr_env/
