@@ -49,7 +49,7 @@ export class SelectorMap extends React.Component {
     );
     axios
       .get(
-        `${process.env.REACT_APP_SERVER_ADDRESS}?ne_lat=${
+        `${process.env.REACT_APP_SERVER_ADDRESS}?nelat=${
           this.state.coordinatePair.ne.lat
         }&nelng=${this.state.coordinatePair.ne.lng}&swlat=${
           this.state.coordinatePair.sw.lat
