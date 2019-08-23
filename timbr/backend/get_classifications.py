@@ -24,7 +24,7 @@ def have_the_computer_classify(coordinates,
             'coordinates': (coordinate),
             'url_to_picture': ibm_results['images'][0]['source_url'],
             'ibm_confidence': confidence,
-            'class': most_likely_class[0]
+            'class_': most_likely_class[0]
         }]
     
     return all_coordinates
