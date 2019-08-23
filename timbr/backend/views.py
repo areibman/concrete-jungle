@@ -11,13 +11,17 @@ from timbr.local_only_no_git import GOOGLE_API_KEY, IBM_API_KEY
 
 @csrf_exempt
 def index(request):
-    ne_lat = request.GET.get('ne_lat', '')
-    ne_long = request.GET.get('ne_long', '')
-    sw_lat = request.GET.get('sw_lat', '')
-    sw_long = request.GET.get('sw_long', '')
+    ne_lat = request.GET.get('nelat', '')
+    ne_lng = request.GET.get('nelng', '')
+    sw_lat = request.GET.get('swlat', '')
+    sw_lng = request.GET.get('swlng', '')
+    print("values:")
+    print("")
+    print(ne_lat, ne_lng, sw_lat, sw_lng)
+    print("")
 
     coordinates = calculate_coordinates(
-        [(ne_lat, ne_long), (sw_lat, sw_long)], 2)
+        [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 2)
 
     print("COORDINATES:", coordinates)
 
@@ -26,6 +30,9 @@ def index(request):
     for coordinate in coordinates:
         g_maps_pic = talk_to_google(coordinate)
         all_coordinates += [send_pic_to_IBM(g_maps_pic)]
+    
+    # Since things worked, save the results to the model
+
 
     return HttpResponse(json.dumps(all_coordinates))
 
