@@ -24,7 +24,9 @@ export class SelectorMap extends React.Component {
       count: 1,
       isSearching: false,
       polygonsList: [],
-      data: {}
+      data: {},
+      markers: [],
+      coordinatePair: {}
     };
   }
 
@@ -38,22 +40,28 @@ export class SelectorMap extends React.Component {
 
   fetchData = () => {
     this.toggleSearchable();
+    console.log(
+      `${process.env.REACT_APP_SERVER_ADDRESS}?ne_lat=${
+        this.state.coordinatePair.ne.lat
+      }&nelng=${this.state.coordinatePair.ne.lng}&swlat=${
+        this.state.coordinatePair.sw.lat
+      }&swlng=${this.state.coordinatePair.sw.lng}`
+    );
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
+      .get(
+        `${process.env.REACT_APP_SERVER_ADDRESS}?ne_lat=${
+          this.state.coordinatePair.ne.lat
+        }&nelng=${this.state.coordinatePair.ne.lng}&swlat=${
+          this.state.coordinatePair.sw.lat
+        }&swlng=${this.state.coordinatePair.sw.lng}`
+      )
       .then(response => {
         // create an array of contacts only with relevant data
-
-        const newContacts = response.data.map(c => {
-          return {
-            id: c.id,
-            name: c.name
-          };
-        });
 
         // create a new "State" object without mutating
         // the original State object.
         const newState = Object.assign({}, this.state, {
-          contacts: newContacts
+          response: response.data
         });
 
         // store the new state object in the component's state
@@ -120,8 +128,32 @@ export class SelectorMap extends React.Component {
                 }}
               />
               {this.state.polygonsList.map((polygon, ndx) => (
-                <Rectangle {...polygon} id={ndx} />
+                <Rectangle
+                  {...polygon}
+                  id={ndx}
+                  options={{
+                    fillColor: "green",
+                    fillOpacity: 0.25,
+                    strokeColor: "red",
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                    clickable: false,
+                    draggable: false,
+                    editable: true,
+                    geodesic: false,
+                    zIndex: 1
+                  }}
+                />
               ))}
+              <Marker
+                onLoad={marker => {
+                  console.log("marker: ", marker);
+                }}
+                position={{
+                  lat: 33.753746,
+                  lng: -84.38633
+                }}
+              />
             </GoogleMap>
           </LoadScript>
         </LoadingOverlay>

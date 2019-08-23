@@ -29,3 +29,5 @@ local_only_no_git.py
 *.pyc
 timbr/timbr/__pycache__/
 timbr_env/
+timbr/env/
+env/
