@@ -16,8 +16,14 @@ def index(request):
     sw_lat = request.GET.get('swlat', '')
     sw_lng = request.GET.get('swlng', '')
 
+    if not ne_lat:
+        ne_lat = 36
+        ne_lng = -23
+        sw_lat = 37
+        sw_lng = -22
+
     coordinates = calculate_coordinates(
-        [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 2)
+        [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 1)
 
     print("COORDINATES:", coordinates)
 
@@ -72,7 +78,7 @@ def send_pic_to_IBM(g_maps_picture):
     classes_result = visual_recognition.classify(
         url=g_maps_picture,
         classifier_ids=["DefaultCustomModel_454633185"]).get_result()
-        # threshold=0).get_result()
+
     print("CLASSIFICATION FROM IBM:", json.dumps(classes_result, indent=2))
 
     return classes_result
