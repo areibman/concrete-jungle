@@ -38,6 +38,10 @@ export class SelectorMap extends React.Component {
     this.setState({ isSearching: !this.state.isSearching });
   };
 
+  iconClickHandler = () => {
+    console.log("hi");
+  };
+
   fetchData = () => {
     this.toggleSearchable();
     console.log(
@@ -74,7 +78,6 @@ export class SelectorMap extends React.Component {
         this.toggleSearchable();
       });
   };
-
   render() {
     return (
       <div style={{ width: "45%", margin: "15px" }}>
@@ -93,7 +96,7 @@ export class SelectorMap extends React.Component {
               mapContainerStyle={{
                 height: "750px"
               }}
-              zoom={9}
+              zoom={10}
               center={{
                 lat: 33.753746,
                 lng: -84.38633
@@ -153,6 +156,9 @@ export class SelectorMap extends React.Component {
                   lat: 33.753746,
                   lng: -84.38633
                 }}
+                clickable={true}
+                icon={"fruit-tree.svg"}
+                onClick={this.iconClickHandler}
               />
             </GoogleMap>
           </LoadScript>
