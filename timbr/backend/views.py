@@ -11,9 +11,14 @@ from timbr.local_only_no_git import GOOGLE_API_KEY, IBM_API_KEY
 
 @csrf_exempt
 def index(request):
-    request.GET.get('')
+    ne_lat = request.GET.get('ne_lat', '')
+    ne_long = request.GET.get('ne_long', '')
+    sw_lat = request.GET.get('sw_lat', '')
+    sw_long = request.GET.get('sw_long', '')
+
     coordinates = calculate_coordinates(
-        [(33.780000, -84.285000), (33.640000, -84.103000)], 2)
+        [(ne_lat, ne_long), (sw_lat, sw_long)], 2)
+
     print("COORDINATES:", coordinates)
 
     all_coordinates = []
