@@ -9,16 +9,12 @@ from watson_developer_cloud import VisualRecognitionV3
 from backend.get_points import calculate_coordinates
 from timbr.local_only_no_git import GOOGLE_API_KEY, IBM_API_KEY
 
-@csrf_exempt
+# @csrf_exempt
 def index(request):
     ne_lat = request.GET.get('nelat', '')
     ne_lng = request.GET.get('nelng', '')
     sw_lat = request.GET.get('swlat', '')
     sw_lng = request.GET.get('swlng', '')
-    print("values:")
-    print("")
-    print(ne_lat, ne_lng, sw_lat, sw_lng)
-    print("")
 
     coordinates = calculate_coordinates(
         [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 2)
@@ -34,7 +30,18 @@ def index(request):
     # Since things worked, save the results to the model
 
 
-    return HttpResponse(json.dumps(all_coordinates))
+    # Return something:
+    info_to_give_alex = [{'coordinates': ('83.123456789', '-35.987654321'),
+      'url_to_picture': 'https://images.google.com/?cute&cat',
+      'ibm_confidence': .50,
+      'class': 'Fig'},
+      {'coordinates': ('84.123456789', '-36.987654321'),
+      'url_to_picture': 'https://images.google.com/?cute&cat',
+      'ibm_confidence': .40,
+      'class': 'Prickly Pear'}
+      ]
+
+    return HttpResponse(json.dumps(info_to_give_alex))
 
 
 def talk_to_google(coordinate):
