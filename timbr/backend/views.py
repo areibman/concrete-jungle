@@ -17,37 +17,37 @@ def index(request):
     sw_lng = request.GET.get('swlng', '')
 
     if not ne_lat:
-        ne_lat = 36
-        ne_lng = -23
-        sw_lat = 37
-        sw_lng = -22
+        # Example fig at 33.736207, -84.352681
+        ne_lat = 33.736207
+        ne_lng = -84.352681
+        sw_lat = 33.736207
+        sw_lng = -84.352681
 
     coordinates = calculate_coordinates(
-        [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 1)
+        [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 2)
 
     print("COORDINATES:", coordinates)
 
     all_coordinates = []
 
     for coordinate in coordinates:
-        g_maps_pic = talk_to_google(coordinate)
-        all_coordinates += [send_pic_to_IBM(g_maps_pic)]
+        g_maps_picture = talk_to_google(coordinate)
+        ibm_results = send_pic_to_IBM(g_maps_picture)
+        class_options = ibm_results['images'][0]['classifiers'][0]['classes']
+        confidence = max([item['score'] for item in class_options])
+        most_likely_class = [item['class'] for item in class_options if item['score'] == confidence]
+
+        all_coordinates += [{
+            'coordinates': (coordinate),
+            'url_to_picture': ibm_results['images'][0]['source_url'],
+            'ibm_confidence': confidence,
+            'class': most_likely_class[0]
+        }]
     
     # Since things worked, save the results to the model
 
 
-    # Return something:
-    info_to_give_alex = [{'coordinates': ('83.123456789', '-35.987654321'),
-      'url_to_picture': 'https://images.google.com/?cute&cat',
-      'ibm_confidence': .50,
-      'class': 'Fig'},
-      {'coordinates': ('84.123456789', '-36.987654321'),
-      'url_to_picture': 'https://images.google.com/?cute&cat',
-      'ibm_confidence': .40,
-      'class': 'Prickly Pear'}
-      ]
-
-    return HttpResponse(json.dumps(info_to_give_alex))
+    return HttpResponse(json.dumps(all_coordinates))
 
 
 def talk_to_google(coordinate):
@@ -77,7 +77,8 @@ def send_pic_to_IBM(g_maps_picture):
 
     classes_result = visual_recognition.classify(
         url=g_maps_picture,
-        classifier_ids=["DefaultCustomModel_454633185"]).get_result()
+        classifier_ids=["DefaultCustomModel_454633185"],
+        threshold='0').get_result()
 
     print("CLASSIFICATION FROM IBM:", json.dumps(classes_result, indent=2))
 
