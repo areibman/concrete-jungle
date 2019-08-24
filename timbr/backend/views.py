@@ -23,6 +23,8 @@ def index(request):
     all_coordinates = have_the_computer_classify(
         [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 4)
     
+    coordinates_to_return = []
+    
     # Save what we've learned
     for coordinate in all_coordinates:
         coordinate_to_save = CoordinatesRequested(
@@ -30,6 +32,8 @@ def index(request):
             longitude = coordinate['coordinates'][1],
             ibm_classification = coordinate['class_'])
         coordinate_to_save.save()
+        if coordinate['ibm_confidence'] > 0.1:
+            coordinates_to_return += coordinate
 
     return HttpResponse(json.dumps(all_coordinates))
 
