@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import LoadingOverlay from "react-loading-overlay";
 import axios from "axios";
 import CardResponses from "./CardResponses";
+import { Card, CardWrapper } from "react-swipeable-cards";
 
 import {
   GoogleMap,
@@ -39,6 +40,7 @@ export class SelectorMap extends React.Component {
 
   iconClickHandler = () => {
     console.log("hi");
+    this.setState({ apiResponse: [] });
   };
   fetchData = () => {
     this.toggleSearchable();
@@ -57,6 +59,7 @@ export class SelectorMap extends React.Component {
 
         // store the new state object in the component's state
         this.setState({ apiResponse: response.data });
+        this.setState({ treeResponses: response.data });
         this.toggleSearchable();
         console.log(this.state);
       })
@@ -65,6 +68,28 @@ export class SelectorMap extends React.Component {
         this.toggleSearchable();
       });
   };
+
+  renderCards() {
+    return (
+      <Card key={"default"}>
+        <img
+          src={"largecjlogo.jpg"}
+          style={{ width: "180px", height: "180px", marginTop: "20px" }}
+        />
+        <h2 style={{ marginBottom: "70px" }}>
+          Select an area on the map and press submit to get started!
+        </h2>
+
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <img
+            src={"arrow.jpg"}
+            style={{ width: "100px", height: "100px", margin: "20px" }}
+          />
+        </div>
+      </Card>
+    );
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -85,10 +110,10 @@ export class SelectorMap extends React.Component {
                 mapContainerStyle={{
                   height: "750px"
                 }}
-                zoom={10}
+                zoom={13}
                 center={{
-                  lat: 33.753746,
-                  lng: -84.38633
+                  lat: 33.730746,
+                  lng: -84.36633
                 }}
               >
                 <DrawingManager
@@ -200,11 +225,16 @@ export class SelectorMap extends React.Component {
             </Button>
           </React.Fragment>
         </div>
-        <div style={{ width: "45%", margin: "15px" }}>
-          <CardResponses
-            responses={this.state.apiResponse}
-            savedTrees={this.state.savedTrees}
-          ></CardResponses>
+        <div style={{ width: "45%", marginRight: "15px", marginLeft: "15px" }}>
+          <img src={"timber.png"} style={{ marginBottom: "-30px" }} />
+          {this.state.apiResponse.length ? (
+            <CardResponses
+              responses={this.state.apiResponse}
+              savedTrees={this.state.savedTrees}
+            ></CardResponses>
+          ) : (
+            <CardWrapper>{this.renderCards()}</CardWrapper>
+          )}
         </div>
       </div>
     );
