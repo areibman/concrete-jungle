@@ -17,8 +17,8 @@ def index(request):
         # Example data: fig at 33.736207, -84.352681
         ne_lat = 33.736207
         ne_lng = -84.352681
-        sw_lat = 33.736207
-        sw_lng = -84.352681
+        sw_lat = 32.736207
+        sw_lng = -83.352681
 
     all_coordinates = have_the_computer_classify(
         [(float(ne_lat), float(ne_lng)), (float(sw_lat), float(sw_lng))], 4)
@@ -32,10 +32,11 @@ def index(request):
             longitude = coordinate['coordinates'][1],
             ibm_classification = coordinate['class_'])
         coordinate_to_save.save()
-        if coordinate['ibm_confidence'] > 0.1:
-            coordinates_to_return += coordinate
 
-    return HttpResponse(json.dumps(all_coordinates))
+        if coordinate['ibm_confidence'] > 0.05:
+            coordinates_to_return += [coordinate]
+
+    return HttpResponse(json.dumps(coordinates_to_return))
 
 
 def save_user_feedback(request):
