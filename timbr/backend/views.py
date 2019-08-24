@@ -33,7 +33,7 @@ def index(request):
             ibm_classification = coordinate['class_'])
         coordinate_to_save.save()
 
-        if coordinate['ibm_confidence'] > 0.2:
+        if coordinate['ibm_confidence'] > 0.1:
             coordinates_to_return += [coordinate]
 
     return HttpResponse(json.dumps(coordinates_to_return))
