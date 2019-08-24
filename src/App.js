@@ -1,31 +1,12 @@
 import React, { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import GoogleApiWrapper from "./MapContainer";
-// import { DrawingMap } from "./DrawingMap";
-import { ResultsMap } from "./ResultsMap";
 import { SelectorMap } from "./SelectorMap";
-import Button from "@material-ui/core/Button";
-import LoadingOverlay from "react-loading-overlay";
-import BounceLoader from "react-spinners/BounceLoader";
-import {
-  GoogleMap,
-  LoadScript,
-  DrawingManager,
-  MarkerClusterer,
-  Marker,
-  Rectangle
-} from "react-google-maps-api";
 
 function App() {
-  const [polygons, setPolygons] = useState([]);
-  const [val, searching] = useState({ isSearching: true });
-  const setSearchable = () => {
-    this.setState({ isSearching: true });
-  };
   return (
     <div className="App">
       <SelectorMap />
+      {/* <Deck /> */}
       {/* <div style={{ width: "45%", margin: "15px" }}>
         <LoadingOverlay
           active={!searching.length}

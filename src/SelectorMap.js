@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import GoogleApiWrapper from "./MapContainer";
 import Button from "@material-ui/core/Button";
 import LoadingOverlay from "react-loading-overlay";
-import BounceLoader from "react-spinners/BounceLoader";
 import axios from "axios";
 
 import {
@@ -142,7 +140,7 @@ export class SelectorMap extends React.Component {
                     strokeWeight: 2,
                     clickable: false,
                     draggable: false,
-                    editable: true,
+                    editable: false,
                     geodesic: false,
                     zIndex: 1
                   }}
