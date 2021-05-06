@@ -37,7 +37,7 @@ Eve==0.8
 eventlet==0.24.1
 Events==0.3
 Flask==1.0.2
-Flask-Cors==3.0.4
+Flask-Cors==3.0.9
 Flask-SocketIO==3.2.1
 future==0.17.1
 google-api-core==1.7.0
