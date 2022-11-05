@@ -18,7 +18,7 @@
     "react-spinners": "^0.6.0",
     "react-swipe-card": "^0.1.4",
     "react-swipeable-cards": "^1.0.6",
-    "storybook": "^1.0.0"
+    "storybook": "^6.5.13"
   },
   "scripts": {
     "start": "react-scripts start",
